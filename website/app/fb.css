@@ -1,0 +1,25 @@
+/* Hide Messenger name */
+._1tqi {
+    display: none;
+}
+
+@media all and (max-width: 640px) {
+    /* Remove border from entire right pane, add it just to conversation */
+    ._1q5- {
+        border-left: 0 !important;
+    }
+    ._20bp {
+        border-left: 1px solid rgba(0, 0, 0, .20);
+    }
+    
+    /* Move over new conversation button */
+    ._5l-3[role="banner"] {
+        display:block !important;
+    }
+    a[href="/new"] {
+        margin-right:-49px;
+        float: right;
+        position:relative;
+        z-index: 10;
+    }
+}

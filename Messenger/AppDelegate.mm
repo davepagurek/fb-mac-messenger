@@ -12,6 +12,7 @@
 #import "MMFakeDragInfo.h"
 
 extern NSString* kMainJSDataURL; // implemented in generated file MainJSDataURL.m
+extern NSString* kMainCSSDataURL; // implemented in generated file MainCSSDataURL.m
 
 #define USE_BLURRY_BACKGROUND 0
 
@@ -120,7 +121,7 @@ static void NetReachCallback(SCNetworkReachabilityRef target,
   if ([[NSUserDefaults standardUserDefaults] boolForKey:@"moves-with-active-space"]) {
     _window.collectionBehavior |= NSWindowCollectionBehaviorMoveToActiveSpace;
   }
-  _window.minSize = {605,300};
+  _window.minSize = {400,300};
     // note: as of 2015-08-12, 604pt is as narrow as messenger.com allows the view to be, before body starts scrolling.
   _window.releasedWhenClosed = NO;
   _window.delegate = self;
@@ -836,7 +837,7 @@ static void NetReachCallback(SCNetworkReachabilityRef target,
    "}"
    ];
   
-  // JS injection. Wait for <head> to become available and then add our <script>
+  // JS/CSS injection. Wait for <head> to become available and then add our <script> and <link>
   if (![[NSUserDefaults standardUserDefaults] boolForKey:@"main.js/disable"]) {
     auto bundleInfo = [NSBundle mainBundle].infoDictionary;
 
@@ -844,29 +845,36 @@ static void NetReachCallback(SCNetworkReachabilityRef target,
     // being used in web views, and also prohibits non-HTTPS from loading in HTTPS context.
     // So, we have to inject main.js.
     auto mainJSURLString = kMainJSDataURL;
+    auto mainCSSURLString = kMainCSSDataURL;
 
     [webView.mainFrame.windowObject evaluateWebScript:
      [NSString stringWithFormat:@""
       "window.MacMessengerVersion = '%@';"
       "window.MacMessengerGitRev = '%@';"
-      "function injectMainJS() {"
+      "function injectMainJSCSS() {"
       "  if (document.head || document.documentElement) {"
       "    var script = document.createElement('script');"
       "    script.src = '%@';"
+      "    var link = document.createElement('link');"
+      "    link.rel = 'stylesheet';"
+      "    link.type = 'text/css';"
+      "    link.href = '%@';"
       "    (document.head || document.documentElement).appendChild(script);"
+      "    (document.head || document.documentElement).appendChild(link);"
       "    return true;"
       "  }"
       "}"
-      "if (!injectMainJS()) {"
+      "if (!injectMainJSCSS()) {"
       "  new MutationObserver(function() {"
-      "    if (injectMainJS()) {"
+      "    if (injectMainJSCSS()) {"
       "      this.disconnect();"
       "    }"
       "  }).observe(document, { attributes: false, childList: true, characterData: false });"
       "}",
       bundleInfo[@"CFBundleShortVersionString"],
       bundleInfo[@"GitRev"],
-      mainJSURLString]
+      mainJSURLString,
+      mainCSSURLString]
      ];
   }
   
