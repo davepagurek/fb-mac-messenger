@@ -1,8 +1,3 @@
-/* Hide Messenger name */
-._1tqi {
-    display: none;
-}
-
 @media all and (max-width: 640px) {
     /* Remove border from entire right pane, add it just to conversation */
     ._1q5- {
