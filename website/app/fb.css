@@ -1,3 +1,10 @@
+/* Smaller sidebar */
+@media all and (min-width: 641px) {
+    ._1enh {
+        min-width: 280px !important;
+    }
+}
+
 @media all and (max-width: 640px) {
     /* Remove border from entire right pane, add it just to conversation */
     ._1q5- {
@@ -21,6 +28,20 @@
     /* Move over search bar to make room for button */
     ._2y8y {
         padding-left: 41px !important;
+    }
+    
+    /* Make sure title doesn't overlap with buttons */
+    ._5743 {
+        box-sizing: border-box;
+        padding-left: 41px !important;
+        padding-right: 41px !important;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+    h2._17w2 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100% !important;
     }
     
     /* Move gear icon up, place read indicator under geat icon */
