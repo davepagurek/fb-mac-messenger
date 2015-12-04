@@ -12,7 +12,6 @@
 #import "MMFakeDragInfo.h"
 
 extern NSString* kMainJSDataURL; // implemented in generated file MainJSDataURL.m
-extern NSString* kMainCSSDataURL; // implemented in generated file MainCSSDataURL.m
 
 #define USE_BLURRY_BACKGROUND 0
 
@@ -837,7 +836,7 @@ static void NetReachCallback(SCNetworkReachabilityRef target,
    "}"
    ];
   
-  // JS/CSS injection. Wait for <head> to become available and then add our <script> and <link>
+  // JS injection. Wait for <head> to become available and then add our <script>
   if (![[NSUserDefaults standardUserDefaults] boolForKey:@"main.js/disable"]) {
     auto bundleInfo = [NSBundle mainBundle].infoDictionary;
 
@@ -845,36 +844,29 @@ static void NetReachCallback(SCNetworkReachabilityRef target,
     // being used in web views, and also prohibits non-HTTPS from loading in HTTPS context.
     // So, we have to inject main.js.
     auto mainJSURLString = kMainJSDataURL;
-    auto mainCSSURLString = kMainCSSDataURL;
 
     [webView.mainFrame.windowObject evaluateWebScript:
      [NSString stringWithFormat:@""
       "window.MacMessengerVersion = '%@';"
       "window.MacMessengerGitRev = '%@';"
-      "function injectMainJSCSS() {"
+      "function injectMainJS() {"
       "  if (document.head || document.documentElement) {"
       "    var script = document.createElement('script');"
       "    script.src = '%@';"
-      "    var link = document.createElement('link');"
-      "    link.rel = 'stylesheet';"
-      "    link.type = 'text/css';"
-      "    link.href = '%@';"
       "    (document.head || document.documentElement).appendChild(script);"
-      "    (document.head || document.documentElement).appendChild(link);"
       "    return true;"
       "  }"
       "}"
-      "if (!injectMainJSCSS()) {"
+      "if (!injectMainJS()) {"
       "  new MutationObserver(function() {"
-      "    if (injectMainJSCSS()) {"
+      "    if (injectMainJS()) {"
       "      this.disconnect();"
       "    }"
       "  }).observe(document, { attributes: false, childList: true, characterData: false });"
       "}",
       bundleInfo[@"CFBundleShortVersionString"],
       bundleInfo[@"GitRev"],
-      mainJSURLString,
-      mainCSSURLString]
+      mainJSURLString]
      ];
   }
   
