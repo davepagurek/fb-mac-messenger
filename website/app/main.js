@@ -406,6 +406,8 @@
  
     // Make back button always hidden
     style += "div[role='banner'] > a:first-child { visibility: hidden; }";
+ 
+    style += "body, .uiScrollableAreaContent, .uiScrollableAreaBody, .uiScrollableAreaWrap, *[role='row'], .uiScrollableAreaContent > div > div { background: transparent; }";
     css.appendChild(document.createTextNode(style));
     document.getElementsByTagName('head')[0].appendChild(css);
  
@@ -504,9 +506,12 @@
     }
     styleComponent("Messenger", {
       "(max-width: 640px)": function(el, matches) {
+                   
+        el.style.backgroundColor = "transparent";
 
         // Allow sidebar to go smaller
         el.firstElementChild.style.minWidth = matches ? null : "280px";
+        el.firstElementChild.style.backgroundColor = "transparent";
         var newConversation = el.querySelector("a[href='/new']");
         newConversation.style.marginRight = matches ? "-109px" : null;
         newConversation.style.float = matches ? "right" : null;
@@ -541,6 +546,8 @@
     });
     styleComponent("MessengerDetailView", {
       "(max-width: 640px)": function(el, matches) {
+        el.style.backgroundColor = "#FFF";
+                   
         // Move border from entire right pane to just the conversation
         el.style.borderLeft = matches ? "0" : null;
         el.querySelector(":scope > div:last-child").style.borderLeft =

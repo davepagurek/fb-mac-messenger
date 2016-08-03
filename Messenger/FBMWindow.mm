@@ -37,13 +37,13 @@
     self.titleVisibility = NSWindowTitleHidden;
     self.titlebarAppearsTransparent = YES;
     
-#if USE_BLURRY_BACKGROUND
+//#if USE_BLURRY_BACKGROUND
     auto* fxview = [[NSVisualEffectView alloc] initWithFrame:{{0,0},frameSize}];
     fxview.blendingMode = NSVisualEffectBlendingModeBehindWindow;
-    fxview.material = NSVisualEffectMaterialAppearanceBased;
-    fxview.state = NSVisualEffectStateFollowsWindowActiveState;
+//    fxview.material = NSVisualEffectMaterialAppearanceBased;
+//    fxview.state = NSVisualEffectStateFollowsWindowActiveState;
     self.contentView = fxview;
-#endif
+//#endif
   }
   self.collectionBehavior = NSWindowCollectionBehaviorFullScreenPrimary;
   

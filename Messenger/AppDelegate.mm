@@ -14,7 +14,7 @@
 
 extern NSString* kMainJSDataURL; // implemented in generated file MainJSDataURL.m
 
-#define USE_BLURRY_BACKGROUND 0
+#define USE_BLURRY_BACKGROUND 1
 
 static BOOL kCFIsOSX_10_10_orNewer;
 
@@ -205,9 +205,9 @@ static void NetReachCallback(SCNetworkReachabilityRef target,
   webView.customUserAgent = @"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_4) AppleWebKit/600.7.12 (KHTML, like Gecko) Version/8.0.7 Safari/600.7.12";
   #endif // 0
   webView.maintainsBackForwardList = NO;
-  #if USE_BLURRY_BACKGROUND
+//  #if USE_BLURRY_BACKGROUND
   webView.drawsBackground = NO;
-  #endif
+//  #endif
   _webView = webView;
 
   _webViewZoomController = [[WebViewZoomController alloc] initWithWebView:webView userDefaults:[NSUserDefaults standardUserDefaults]];
@@ -221,7 +221,7 @@ static void NetReachCallback(SCNetworkReachabilityRef target,
   _curtainView.wantsLayer = YES;
   _curtainView.layer.backgroundColor = [NSColor whiteColor].CGColor;
   _curtainView.layer.opaque = NO;
-  _curtainView.alphaValue = 0.8;
+  _curtainView.alphaValue = 0.0;
   [_window.contentView addSubview:_curtainView];
   
   // Progress bar
@@ -565,11 +565,12 @@ static void NetReachCallback(SCNetworkReachabilityRef target,
   if (kCFIsOSX_10_10_orNewer) {
     window.appearance = [NSAppearance appearanceNamed:NSAppearanceNameVibrantLight];
     window.titleVisibility = title == nil ? NSWindowTitleHidden : NSWindowTitleVisible;
-    //window.titlebarAppearsTransparent = YES;
+    window.titlebarAppearsTransparent = YES;
   }
   
   auto webView = [[WebView alloc] initWithFrame:{{0,0},{100,100}} frameName:@"main" groupName:identifier];
   [webView setFrame:[window.contentView bounds]];
+  webView.drawsBackground = NO;
   webView.translatesAutoresizingMaskIntoConstraints = YES;
   webView.autoresizesSubviews = YES;
   webView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
