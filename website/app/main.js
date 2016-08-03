@@ -407,7 +407,12 @@
     // Make back button always hidden
     style += "div[role='banner'] > a:first-child { visibility: hidden; }";
  
-    style += "body, .uiScrollableAreaContent, .uiScrollableAreaBody, .uiScrollableAreaWrap, *[role='row'], .uiScrollableAreaContent > div > div { background: transparent; }";
+    // Show transparent sidebar
+    style += "body, .uiScrollableAreaContent, .uiScrollableAreaBody, .uiScrollableAreaWrap, *[role='row'] { background: transparent; }";
+ 
+    // Hade white background on online/offline toggle
+    style += ".uiScrollableAreaContent > div > div { background: transparent; }";
+
     css.appendChild(document.createTextNode(style));
     document.getElementsByTagName('head')[0].appendChild(css);
  
